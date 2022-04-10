@@ -1,0 +1,19 @@
+{
+  "name": "shoppingapi",
+  "version": "1.0.0",
+  "description": "project Node JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sleem1995/ShoppingAPI.git"
+  },
+  "author": "Our Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sleem1995/ShoppingAPI/issues"
+  },
+  "homepage": "https://github.com/sleem1995/ShoppingAPI#readme"
+}

@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/sleem1995/ShoppingAPI/issues"
   },
-  "homepage": "https://github.com/sleem1995/ShoppingAPI#readme"
+  "homepage": "https://github.com/sleem1995/ShoppingAPI#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
 }

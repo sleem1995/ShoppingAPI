@@ -17,7 +17,10 @@ const userSchema = mongoose.Schema({
   isAdmin:{
     typeof:Boolean,
     default:false
-  }
+  },
+  products:{
+    type:Array
+  },
 });
 
 

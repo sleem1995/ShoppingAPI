@@ -8,7 +8,6 @@ const UserModel = require('../models/user');
  */
 //@RaniaMahmoud
 
-/* /user/Get */
 async function Get(id) {
     let user = await userModel.findOne({ _id: id });
     console.log(user);

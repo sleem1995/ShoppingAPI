@@ -19,6 +19,7 @@
   "homepage": "https://github.com/sleem1995/ShoppingAPI#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "mongoose": "^6.2.11",
     "nodemon": "^2.0.15"

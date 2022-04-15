@@ -22,17 +22,16 @@ const productSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  sellerId: {
+  userId: {
     type: mongoose.SchemaTypes.ObjectId,
-    ref: "Seller",
-    required: true,
+    ref: "user",
+    // required: true,
   },
-  creationDate: {
-    type: Date,
-    required: true,
-  },
-});
+  
+},
+{timestamps:true}
+);
 
-var productModel = mongoose.model("Product", productSchema);
+var productModel = mongoose.model("product", productSchema);
 
 module.exports = productModel;

@@ -4,8 +4,10 @@ function findOrders() {
     return orders;
   }
 
-  function createOrder(order) {
-    var order= orderModel.create(order);
+  function createOrder(id,{products,createdat}) {
+    console.log(id);
+    var order= orderModel.create({userId:id,products:products,createdat:createdat});
+    console.log(order);
     return order;
   }
 

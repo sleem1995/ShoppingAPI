@@ -2,6 +2,7 @@ const userModel = require('../models/user');
 const UserModel = require('../models/user');
 const jwt = require("jsonwebtoken");
 require("dotenv").config()
+const bcrypt = require('bcryptjs');
 
 /*
 1-Get Done
@@ -34,25 +35,38 @@ async function Create({ name, password, isAdmin }) {
     }
 }
 
-async function Update(id, { name, password }) {
-    await UserModel.findOneAndUpdate({ _id: id }, {
-        name: name,
-        password: password
-    })
-    let user =await Get(id)
-    console.log(user);
-    return user;
+async function Update(id, AuthID, { name, password }) {
+    if(id == AuthID){
+        await UserModel.findOneAndUpdate({ _id: id }, {
+            name: name,
+            password: password
+        })
+        let user =await Get(id)
+        console.log(user);
+        return user;
+    }else{
+        return "Not Authorize";
+    }
 }
-async function Delete(id) {
-    let user = await UserModel.findOneAndDelete({ _id: id })
-    console.log(user);
-    return user;
+async function Delete(id, AuthID) {
+    if(id == AuthID){
+        let user = await UserModel.findOneAndDelete({ _id: id })
+        console.log(user);
+        return user;
+    }else{
+        return "Not Authorize";
+    }
 }
 async function login({ name, password }) {
+    console.log("NAME ="+name);
     var user = await userModel.findOne({ name: name });
+    console.log("user ="+user);
+    console.log("Login");
     if (user) {
-        //var valid = await bcrypt.compare(password, user.password);
-        if (true) {
+        console.log("Login IF");
+        var valid = await bcrypt.compare(password, user.password);
+        console.log("Login IF 2 "+valid);
+        if (valid) {
             console.log("Afetr "+process.env.SECRET_KEY);
             return jwt.sign({
                 name: user.name,
@@ -62,7 +76,8 @@ async function login({ name, password }) {
             {
                 expiresIn: "1h"
              });
-        } else {
+        } 
+        else {
             res.status(401).end();
         }
     } else {

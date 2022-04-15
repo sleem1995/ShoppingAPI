@@ -4,7 +4,8 @@ const {
     Get,
     Create,
     Update,
-    Delete
+    Delete,
+    login
 } = require("../controller/user");
 
 router.get("/sellertest", (req, res) => {
@@ -20,8 +21,8 @@ router.get("/sellertest", (req, res) => {
 router.post("/", async(req, res, next) => {
     const body = req.body;
     try {
-        let user = await Create(body);
-        res.status(201).json({ User: user });
+        let token = await Create(body);
+        res.status(201).json({ Token: token });
     } catch (err) {
         res.status(422).json(err);
     }
@@ -66,6 +67,17 @@ router.delete("/:id", async(req, res, next) => {
         res.status(422).json(err);
     }
 
+})
+
+router.post("/login", async(req, res, next) => {
+    const body = req.body;
+    try {
+        console.log(" Rout "+process.env.SECRET_KEY);
+        let user = await login(body);
+        res.status(201).json({ User: user });
+    } catch (err) {
+        res.status(422).json(err);
+    }
 })
 
 module.exports = router;

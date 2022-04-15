@@ -1,5 +1,8 @@
 const userModel = require('../models/user');
 const UserModel = require('../models/user');
+const jwt = require("jsonwebtoken");
+require("dotenv").config()
+
 /*
 1-Get Done
 2-Post @RaniaMahmoud Not Yet
@@ -17,7 +20,18 @@ async function Get(id) {
 async function Create({ name, password, isAdmin }) {
     let user = await userModel.create({ name: name, password: password, isAdmin: isAdmin });
     console.log("User Fun "+user);
-    return user;
+    if (user) {
+        return jwt.sign({
+            name: user.name,
+            id: user._id
+        },
+            process.env.SECRET_KEY,
+            {
+                expiresIn: "1h"
+            });
+    } else {
+        res.status(401).end();
+    }
 }
 
 async function Update(id, { name, password }) {
@@ -34,4 +48,26 @@ async function Delete(id) {
     console.log(user);
     return user;
 }
-module.exports = { Get, Create, Update, Delete };
+async function login({ name, password }) {
+    var user = await userModel.findOne({ name: name });
+    if (user) {
+        //var valid = await bcrypt.compare(password, user.password);
+        if (true) {
+            console.log("Afetr "+process.env.SECRET_KEY);
+            return jwt.sign({
+                name: user.name,
+                id: user._id
+            },
+            process.env.SECRET_KEY,
+            {
+                expiresIn: "1h"
+             });
+        } else {
+            res.status(401).end();
+        }
+    } else {
+        res.status(422).end();
+    }
+}
+
+module.exports = { Get, Create, Update, Delete, login };

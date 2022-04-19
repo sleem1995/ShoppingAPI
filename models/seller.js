@@ -13,7 +13,14 @@ const SellerSchema = mongoose.Schema({
     minlength: 4,
     maxlength: 140,
     required: true,
-  }
+  },
+  products: [
+    {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "product",
+      required:false
+    }   
+  ],
 });
 
 

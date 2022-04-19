@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const { Create,findOne  } = require("../controller/seller");
+const { Create,findOne,login  } = require("../controller/seller");
 
 
 router.get("/:name",async(req,res, next)=>{
@@ -24,4 +24,14 @@ router.post("/", async(req, res, next) => {
     
 })
 
+router.post("/login", async(req, res, next) => {
+    const body = req.body;
+    try {
+        console.log(" Rout "+process.env.SECRET_KEY);
+        let seller = await login(body);
+        res.status(201).json({ Seller: seller });
+    } catch (err) {
+        res.status(422).json(err);
+    }
+})
 module.exports= router;

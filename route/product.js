@@ -1,6 +1,9 @@
 const product = require("../models/product")
 const router = require("express").Router();
-const {Create,GetAll,GetByName,Update, Delete,GetProductBySellerName} = require("../controller/proudct");
+const {Create,GetAll,GetByName,Update, Delete,GetProductBySellerName,SellerProducts} = require("../controller/proudct");
+const {CheckSeller} =require("../controller/seller");
+const jwt = require("jsonwebtoken");
+require("dotenv").config()
 
 router.post("/", async(req, res, next) => {
     const body = req.body;
@@ -13,18 +16,29 @@ router.post("/", async(req, res, next) => {
 })
 
 router.get('/', (req, res, next) => {
-
-        GetAll().then((product)=>{
-        res.status(200).json(product)
-    }).catch((error)=>{
-        res.status(422).json(error)
+    var {authorization}=req.headers;
+    var decoded = jwt.verify(authorization, process.env.SECRET_KEY);
+    console.log("decoded "+decoded.id)
+    CheckSeller(decoded.id).then(seller=>{
+        if(seller){
+            console.log("Check "+true+" "+seller);
+            SellerProducts(decoded.id).then(products=>{
+                console.log(products);
+                res.status(201).json(products);
+            });
+        }
+        else{
+            console.log("Check "+false+" "+seller);
+            res.status(422).json(err);
+        }
     })
-
+    
 })
 router.get('/seller/:name', (req, res, next) => {
     const {name}=req.params;
-
+    console.log(name);
     GetProductBySellerName(name).then((products)=>{
+        console.log(products);
     res.status(200).json(products)
 }).catch((error)=>{
     res.status(422).json(error)

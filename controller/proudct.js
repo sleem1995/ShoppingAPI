@@ -4,11 +4,17 @@ async function Create({ name, description, price,photo,userId }) {
     let product = await productModel.create({name:name,description:description,price:price,photo:photo,userId:userId });
     return product;
 }
-
-
+//For User  محدش يغيرها
 async function GetAll() {
     let products = await productModel.find({})
     return products;
+}
+
+async function SellerProducts(id) {
+    console.log(id);
+    // let products = ;
+    // console.log("asds  "+products);
+    return await productModel.find({sellerID:id});
 }
 
 async function GetByName(name) {
@@ -17,6 +23,8 @@ async function GetByName(name) {
 }
 // after auth
 async function GetProductBySellerName(name) {
+    console.log(name);
+
    return sellerHelper.GetProductsBySellerName(name);
 }
 
@@ -38,4 +46,4 @@ async function Delete(name) {
     console.log(product);
     return product;
 }
-module.exports = {Create,GetAll,GetByName,Update, Delete,GetProductBySellerName};
+module.exports = {Create,GetAll,GetByName,Update, Delete,GetProductBySellerName,SellerProducts};

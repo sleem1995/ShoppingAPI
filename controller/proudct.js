@@ -46,4 +46,9 @@ async function Delete(name) {
     console.log(product);
     return product;
 }
-module.exports = {Create,GetAll,GetByName,Update, Delete,GetProductBySellerName,SellerProducts};
+
+async function GetByID(id) {
+    let pro = await productModel.findOne({_id:id});
+    return pro;
+}
+module.exports = {Create,GetAll,GetByName,Update, Delete,GetProductBySellerName,SellerProducts,GetByID};

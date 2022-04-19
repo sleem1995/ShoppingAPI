@@ -54,13 +54,13 @@ router.delete("/:name", async(req, res, next) => {
 })
 
 
-router.put("/:name", async(req, res, next) => {
-    const { name } = req.params;
+router.patch("/:id", async(req, res, next) => {
+    const { id } = req.params;
     const body = req.body;
 
     try {
         console.log("product");
-        const product = await Update(name,body);
+        const product = await Update(id,body);
         console.log(product);
         res.status(201).json(product);
     } catch (err) {

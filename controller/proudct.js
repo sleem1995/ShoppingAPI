@@ -20,15 +20,16 @@ async function GetProductBySellerName(name) {
    return sellerHelper.GetProductsBySellerName(name);
 }
 
-async function Update(name, { name, description, price,photo}) {
-    await productModel.findByIdAndUpdate({ name: name },
+async function Update(id, { name,description, price,photo}) {
+    console.log("INFUNCtion")
+    await productModel.findByIdAndUpdate({ _id: id },
     {
-        name: name,
+        name:name,
         description: description,
         price: price,
         photo: photo,
     })
-    let product = await productModel.findOne(id == id);
+    let product = await productModel.findOne({_id:id});
     console.log(product);
     return product;
 }

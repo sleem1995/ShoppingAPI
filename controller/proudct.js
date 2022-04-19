@@ -1,5 +1,5 @@
 const productModel = require('../models/product');
-
+const sellerHelper=require('../controller/seller');
 async function Create({ name, description, price,photo,userId }) {
     let product = await productModel.create({name:name,description:description,price:price,photo:photo,userId:userId });
     return product;
@@ -17,11 +17,11 @@ async function GetByName(name) {
 }
 // after auth
 async function GetProductBySellerName(name) {
-   
+   return sellerHelper.GetProductsBySellerName(name);
 }
 
-async function Update(id, { name, description, price,photo}) {
-    await productModel.findByIdAndUpdate({ id: id },
+async function Update(name, { name, description, price,photo}) {
+    await productModel.findByIdAndUpdate({ name: name },
     {
         name: name,
         description: description,
@@ -29,6 +29,7 @@ async function Update(id, { name, description, price,photo}) {
         photo: photo,
     })
     let product = await productModel.findOne(id == id);
+    console.log(product);
     return product;
 }
 async function Delete(name) {
@@ -36,4 +37,4 @@ async function Delete(name) {
     console.log(product);
     return product;
 }
-module.exports = {Create,GetAll,GetByName,Update, Delete};
+module.exports = {Create,GetAll,GetByName,Update, Delete,GetProductBySellerName};

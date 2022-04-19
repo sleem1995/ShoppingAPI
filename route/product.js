@@ -1,6 +1,6 @@
 const product = require("../models/product")
 const router = require("express").Router();
-const {Create,GetAll,GetByName,Update, Delete} = require("../controller/proudct");
+const {Create,GetAll,GetByName,Update, Delete,GetProductBySellerName} = require("../controller/proudct");
 
 router.post("/", async(req, res, next) => {
     const body = req.body;
@@ -19,6 +19,16 @@ router.get('/', (req, res, next) => {
     }).catch((error)=>{
         res.status(422).json(error)
     })
+
+})
+router.get('/seller/:name', (req, res, next) => {
+    const {name}=req.params;
+
+    GetProductBySellerName(name).then((products)=>{
+    res.status(200).json(products)
+}).catch((error)=>{
+    res.status(422).json(error)
+})
 
 })
 
@@ -44,12 +54,14 @@ router.delete("/:name", async(req, res, next) => {
 })
 
 
-router.put("/:id", async(req, res, next) => {
-    const { id } = req.params;
+router.put("/:name", async(req, res, next) => {
+    const { name } = req.params;
     const body = req.body;
 
     try {
-        const product = await Update(id,body);
+        console.log("product");
+        const product = await Update(name,body);
+        console.log(product);
         res.status(201).json(product);
     } catch (err) {
         res.status(422).json(err);

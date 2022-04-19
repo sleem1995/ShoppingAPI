@@ -10,5 +10,11 @@ async function Create({ name, password }) {
     //console.log(user);
     return seller;
 }
+function GetProductsBySellerName(name)
+{
+   var {products}=findOne(name);
+   console.log(products);
+   return products;
+}
 
- module.exports = { Create, findOne };
+ module.exports = { Create, findOne,GetProductsBySellerName };

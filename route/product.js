@@ -72,7 +72,7 @@ router.get("/:name", async(req, res, next) => {
         res.status(422).json(err);
     }
 })
-
+/*
 router.delete("/:name", async(req, res, next) => {
     const { name } = req.params;
     try {
@@ -83,6 +83,10 @@ router.delete("/:name", async(req, res, next) => {
     }
 
 })
+*/
+
+
+
 
 
 router.patch("/:id", async(req, res, next) => {
@@ -121,19 +125,46 @@ router.patch("/:id", async(req, res, next) => {
         }
     })
 
+})
 
-/*
+
+
+router.delete("/:id", async(req, res, next) => {
     const { id } = req.params;
     const body = req.body;
-    try {
-        console.log("product");
-        const product = await Update(id,body);
-        console.log(product);
-        res.status(201).json(product);
-    } catch (err) {
-        res.status(422).json(err);
-    }
-*/
+    var {authorization}=req.headers;
+    var decoded = jwt.verify(authorization, process.env.SECRET_KEY);
+    console.log("decoded "+decoded.id)
+    CheckSeller(decoded.id).then(seller=>{
+        if(seller){
+            console.log("Check "+true+" "+seller);
+            GetByID(id).then(pro=>{
+                console.log("pro..."+pro);
+                console.log("pro._id..."+pro.id);
+                const {sellerID} = pro;
+                console.log("sellerID..."+ sellerID);
+                 if (sellerID==decoded.id)
+                {
+                    console.log("sellerID = ProSellerId");
+                    console.log("product");
+                     Delete(id,body).then(pro=>{
+                        console.log(pro);
+                        res.status(201).json(pro);
+                     });
+                }
+                else
+                {
+                    console.log("sellerID !!!!!!!= ProSellerId");
+                    res.status(422).json({Message:"This is not your product"});
+                }
+            })
+        }
+        else{
+            console.log("Check "+false+" "+seller);
+            res.status(422).json({Message:"You are not a seller"});
+        }
+    })
+
 })
 
 

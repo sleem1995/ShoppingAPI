@@ -54,8 +54,8 @@ async function Update(id, { name,description, price,photo}) {
     console.log(product);
     return product;
 }
-async function Delete(name) {
-    let product = await productModel.findOneAndRemove({ name: name})
+async function Delete(id) {
+    let product = await productModel.findOneAndRemove({ _id: id})
     console.log(product);
     return product;
 }

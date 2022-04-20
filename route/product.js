@@ -1,9 +1,42 @@
 const product = require("../models/product")
 const router = require("express").Router();
+const app=require('express');
 const {Create,GetAll,GetByName,Update, Delete,GetProductBySellerName,SellerProducts,GetByID} = require("../controller/proudct");
 const {CheckSeller} =require("../controller/seller");
 const jwt = require("jsonwebtoken");
+const { append } = require("express/lib/response");
 require("dotenv").config()
+//For User
+router.get('/', async(req, res, next) => {
+    try{
+        res.status(201).json(await GetAll());
+    }catch(error){
+        res.status(422).json(err);
+    }
+
+})
+
+app.use('authorization');
+
+router.get('/sellerProducts', (req, res, next) => {
+    var {authorization}=req.headers;
+    var decoded = jwt.verify(authorization, process.env.SECRET_KEY);
+    console.log("decoded "+decoded.id)
+    CheckSeller(decoded.id).then(seller=>{
+        if(seller){
+            console.log("Check "+true+" "+seller);
+            SellerProducts(decoded.id).then(products=>{
+                console.log(products);
+                res.status(201).json(products);
+            });
+        }
+        else{
+            console.log("Check "+false+" "+seller);
+            res.status(422).json(err);
+        }
+    })
+    
+})
 
 router.post("/", async(req, res, next) => {
 
@@ -34,25 +67,6 @@ router.post("/", async(req, res, next) => {
     }
 })
 
-router.get('/', (req, res, next) => {
-    var {authorization}=req.headers;
-    var decoded = jwt.verify(authorization, process.env.SECRET_KEY);
-    console.log("decoded "+decoded.id)
-    CheckSeller(decoded.id).then(seller=>{
-        if(seller){
-            console.log("Check "+true+" "+seller);
-            SellerProducts(decoded.id).then(products=>{
-                console.log(products);
-                res.status(201).json(products);
-            });
-        }
-        else{
-            console.log("Check "+false+" "+seller);
-            res.status(422).json(err);
-        }
-    })
-    
-})
 router.get('/seller/:name', (req, res, next) => {
     const {name}=req.params;
     console.log(name);

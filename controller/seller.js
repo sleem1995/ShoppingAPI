@@ -30,7 +30,19 @@ async function GetProductsBySellerName(name)
    //    }
    // });
    // console.log("ProductArray "+ProductsByUser);
-   return await SellerModel.findOne({name : name},{products:1,_id:0}).populate("products");
+   // var ProductsByUser=[]
+   // SellerModel.findOne({name : name},{products:1,_id:0}).then(seller=>{
+
+   //    seller.products.forEach((product) => {
+   //       ProductModel.findOne({_id:product}).then(productItem=>{
+   //          ProductsByUser.push(productItem);
+   //          console.log("productItem "+ product);
+   //       })
+   //    });
+   //    console.log("ProductsByUser => "+ProductsByUser);
+   //    return ProductsByUser;
+   // })
+   return await SellerModel.findOne({name : name},{products:1,_id:0}).populate({path:'products'});
 }
 
 async function login({ name, password }) {
@@ -72,7 +84,7 @@ async function CheckSeller(id){
    return await SellerModel.findOne({_id:id})
 }
 async function AddProduct(id, product)
- {
+{
     console.log("product "+product);
    //  let seller =await SellerModel.findOne({_id:id})
    SellerModel.findOne({_id:id}).then(seller=>{

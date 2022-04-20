@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 require("dotenv").config()
-
+ 
 const {
     Get,
     Create,
@@ -76,17 +76,40 @@ router.patch("/:id", async (req, res, next) => {
 
 })
 
+// router.delete("/:id", async (req, res, next) => {
+//     const { id } = req.params;
+//     var { authorization } = req.headers;
+//     var decoded = jwt.verify(authorization, process.env.SECRET_KEY);
+//     var AuthID = decoded.id;
+//     try {
+//         console.log(id);
+//         const user = await Delete(id, AuthID);
+//         console.log(user);
+//         res.status(201).json({ User: user });
+//     } catch (err) {
+//         res.status(422).json(err);
+//     }
+
+// })
+
 router.delete("/:id", async (req, res, next) => {
     const { id } = req.params;
     var { authorization } = req.headers;
     var decoded = jwt.verify(authorization, process.env.SECRET_KEY);
     var AuthID = decoded.id;
-    try {
-        console.log(id);
-        const user = await Delete(id, AuthID);
-        console.log(user);
-        res.status(201).json({ User: user });
-    } catch (err) {
+
+    try{
+        let user = await IsUser(AuthID);
+        console.log(user)
+        if(user)
+        { 
+          let result = await  Delete(id,AuthID);
+          res.status(200).json({result,Message:"Deleted Sucssesfuly"})
+        }else
+        {
+            res.status(401).json({Message:"Not Authorize"})
+        }
+    }catch (err) {
         res.status(422).json(err);
     }
 

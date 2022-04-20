@@ -41,9 +41,9 @@ async function login({ name, password }) {
    if (user) {
        console.log("Login IF");
        var valid = await bcrypt.compare(password, user.password);
-       console.log("Login IF 2 "+valid);
+       console.log("Login If 2 "+valid);
        if (valid) {
-           console.log("Afetr "+process.env.SECRET_KEY);
+           console.log("afetr "+process.env.SECRET_KEY);
            return jwt.sign({
                name: user.name,
                id: user._id
@@ -74,7 +74,7 @@ async function CheckSeller(id){
 async function AddProduct(id, product)
  {
     let seller =await SellerModel.findOne({_id:id})
-     seller.products.push(product)
+     //seller.products.push(product) --Error
      return seller;
  }
 module.exports = { Create, findOne,GetProductsBySellerName,login,CheckSeller,AddProduct };

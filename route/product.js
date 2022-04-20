@@ -6,15 +6,16 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config()
 
 router.post("/", async(req, res, next) => {
-    const body = req.body;
-    var { authorization } = req.headers;
-    console.log("AuthID"+AuthID);
-    var decoded = jwt.verify(authorization, process.env.SECRET_KEY);
-    var AuthID = decoded.id;
-    console.log("authID"+AuthID);
+
     try {
+        const body = req.body;
+        var { authorization } = req.headers;
+        console.log("AuthID"+AuthID);
+        var decoded = jwt.verify(authorization, process.env.SECRET_KEY);
+        var AuthID = decoded.id;
+        console.log("authID"+AuthID);
         CheckSeller(AuthID).then(item =>{
-            if(item)
+            if(item) 
             {
                 console.log("item"+item);
                 let product = Create(body);

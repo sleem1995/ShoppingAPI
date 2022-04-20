@@ -11,6 +11,7 @@ async function findOne(Name){
 }
 
 async function Create({ name, password , products}) {
+   
     let seller = await SellerModel.create({ name: name, password: password,products:products});
     //console.log(user);
     return seller;
@@ -39,9 +40,9 @@ async function login({ name, password }) {
    console.log("Login");
    if (user) {
        console.log("Login IF");
-       //var valid = await bcrypt.compare(password, user.password);
-       //console.log("Login IF 2 "+valid);
-       if (true) {
+       var valid = await bcrypt.compare(password, user.password);
+       console.log("Login IF 2 "+valid);
+       if (valid) {
            console.log("Afetr "+process.env.SECRET_KEY);
            return jwt.sign({
                name: user.name,
@@ -70,4 +71,10 @@ async function CheckSeller(id){
    // }
    return await SellerModel.findOne({_id:id})
 }
-module.exports = { Create, findOne,GetProductsBySellerName,login,CheckSeller };
+async function AddProduct(id, product)
+ {
+    let seller =await SellerModel.findOne({_id:id})
+     seller.products.push(product)
+     return seller;
+ }
+module.exports = { Create, findOne,GetProductsBySellerName,login,CheckSeller,AddProduct };

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const bcrypt = require('bcryptjs');
 const SellerSchema = mongoose.Schema({
   name: {
     type: String,
@@ -22,6 +22,18 @@ const SellerSchema = mongoose.Schema({
     }   
   ],
 });
+
+SellerSchema.pre('save', function () {
+
+  var salt = bcrypt.genSaltSync(10);
+  this.password = bcrypt.hashSync(this.password, salt);
+})
+
+SellerSchema.pre('findOneAndUpdate', async function () {
+  var salt = bcrypt.genSaltSync(10);
+
+  this._update.password = await bcrypt.hash(this._update.password, salt)
+})
 
 
 var SellerModel = mongoose.model("seller", SellerSchema);

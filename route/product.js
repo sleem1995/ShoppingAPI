@@ -7,10 +7,26 @@ require("dotenv").config()
 
 router.post("/", async(req, res, next) => {
     const body = req.body;
+    var { authorization } = req.headers;
+    console.log("AuthID"+AuthID);
+    var decoded = jwt.verify(authorization, process.env.SECRET_KEY);
+    var AuthID = decoded.id;
+    console.log("authID"+AuthID);
     try {
-        let product = await Create(body);
-        res.status(201).json(product);
-    } catch (err) {
+        CheckSeller(AuthID).then(item =>{
+            if(item)
+            {
+                console.log("item"+item);
+                let product = Create(body);
+                res.status(201).json(product);
+            }
+            else {
+                res.status(401).json({ Message: 'Not Authorize' });
+            }
+        })
+       
+     } catch (err) {
+        console.log("error");
         res.status(422).json(err);
     }
 })

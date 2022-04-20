@@ -1,8 +1,21 @@
 const productModel = require('../models/product');
 const sellerHelper=require('../controller/seller');
+
+
+
 async function Create({ name, description, price,photo,userId }) {
-    let product = await productModel.create({name:name,description:description,price:price,photo:photo,userId:userId });
-    return product;
+      let product = await productModel.create(
+        {name:name,
+        description:description,
+        price:price,
+        photo:photo,
+        userId:userId }
+        );
+        console.log(product);
+        let seller =await sellerHelper.AddProduct(userId,product);
+        console.log(seller);
+        return seller;
+  
 }
 //For User  محدش يغيرها
 async function GetAll() {

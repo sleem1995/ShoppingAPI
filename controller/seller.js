@@ -19,18 +19,18 @@ async function Create({ name, password , products}) {
 //Not Work Edit @asmaa497 @AsmaaAAAAAAAAAAAAAAAAAA @asmaa497 @EhsanAhmed @RaniaMahmoud
 async function GetProductsBySellerName(name)
 {
-   var {products} = await SellerModel.findOne({name : name},{products:1,_id:0});
-   console.log(products);
-   var ProductsByUser=[]
-   products.forEach((product) => {
-      var productItem = ProductModel.findOne({_id:product});
-      if(productItem){
-         ProductsByUser.push(productItem);
-         console.log("productItem "+ productItem);
-      }
-   });
-   console.log("ProductArray "+ProductsByUser);
-   return ProductsByUser;
+   // var {products} = ;
+   // console.log(products);
+   // var ProductsByUser=[]
+   // products.forEach((product) => {
+   //    var productItem = ProductModel.findOne({_id:product});
+   //    if(productItem){
+   //       ProductsByUser.push(productItem);
+   //       console.log("productItem "+ productItem);
+   //    }
+   // });
+   // console.log("ProductArray "+ProductsByUser);
+   return await SellerModel.findOne({name : name},{products:1,_id:0}).populate("products");
 }
 
 async function login({ name, password }) {
@@ -73,8 +73,19 @@ async function CheckSeller(id){
 }
 async function AddProduct(id, product)
  {
-    let seller =await SellerModel.findOne({_id:id})
-     //seller.products.push(product) --Error
-     return seller;
- }
+    console.log("product "+product);
+   //  let seller =await SellerModel.findOne({_id:id})
+   SellerModel.findOne({_id:id}).then(seller=>{
+      console.log(seller);
+      let {products}=seller;
+      console.log("seller  "+seller);
+      products.push(product)
+      SellerModel.findOneAndUpdate({_id:id},{products:products}).then(s=>{
+         console.log("InUpdate Products "+s);
+         //console.log("products "+products);
+         return seller;
+      })
+
+   })
+}
 module.exports = { Create, findOne,GetProductsBySellerName,login,CheckSeller,AddProduct };

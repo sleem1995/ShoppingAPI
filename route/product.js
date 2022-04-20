@@ -18,8 +18,10 @@ router.post("/", async(req, res, next) => {
             if(item) 
             {
                 console.log("item"+item);
-                let product = Create(body);
-                res.status(201).json(product);
+                Create(AuthID,body).then(product=>{
+                    console.log(product);
+                    res.status(201).json(product);
+                });
             }
             else {
                 res.status(401).json({ Message: 'Not Authorize' });

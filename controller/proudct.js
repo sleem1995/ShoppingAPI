@@ -3,19 +3,16 @@ const sellerHelper=require('../controller/seller');
 
 
 
-async function Create({ name, description, price,photo,userId }) {
-      let product = await productModel.create(
-        {name:name,
-        description:description,
-        price:price,
-        photo:photo,
-        userId:userId }
-        );
-        console.log(product);
-        let seller =await sellerHelper.AddProduct(userId,product);
-        console.log(seller);
-        return seller;
-  
+async function Create(AuthID,{ name, description, price, photo }) {
+
+    //   let product = await productModel.create(
+    //     {name:name,description:description,price:price,photo:photo,sellerID:sellerID });
+    //     console.log(product);
+        // let seller = await 
+        // console.log(seller);
+        //return await sellerHelper.AddProduct(sellerID,product._id);
+
+        return await productModel.create({name:name,description:description,price:price,photo:photo,sellerID:AuthID });
 }
 //For User  محدش يغيرها
 async function GetAll() {

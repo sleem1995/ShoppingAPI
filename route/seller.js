@@ -18,7 +18,6 @@ router.get("/:name",async(req,res, next)=>{
 
 router.post("/", async(req, res, next) => {
     const body = req.body;
-    
         var seller = await Create(body);
         res.json(seller);
     
@@ -29,7 +28,7 @@ router.post("/login", async(req, res, next) => {
     try {
         console.log(" Rout "+process.env.SECRET_KEY);
         let seller = await login(body);
-        res.status(201).json({ Seller: seller });
+        res.status(201).json({ token: seller });
     } catch (err) {
         res.status(422).json(err);
     }
